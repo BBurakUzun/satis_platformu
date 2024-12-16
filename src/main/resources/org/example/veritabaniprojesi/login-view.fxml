@@ -42,7 +42,7 @@
                   <Image url="@pictures/keys-icon.png" />
                </image>
             </ImageView>
-            <Button fx:id="loginButton" layoutX="192.0" layoutY="421.0" mnemonicParsing="false" text="Giriş" />
+            <Button fx:id="loginButton" layoutX="192.0" layoutY="421.0" mnemonicParsing="false" onAction="#onSignIn" text="Giriş" />
             <Text fx:id="signUpText" layoutX="104.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Üye değil misin ? Kayıt olmak için hemen tıkla" />
          </children>
       </AnchorPane>

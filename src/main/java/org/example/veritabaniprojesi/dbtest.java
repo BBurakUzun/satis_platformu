@@ -7,9 +7,9 @@ import java.sql.SQLException;
 public class dbtest {
 
     public static void main(String[] args) {
-        String url = "jdbc:sqlserver://192.168.56.1:1433;databaseName=testdb";
-        String user = "sa";  // MSSQL kullanıcı adı
-        String password = "your_password"; // MSSQL şifresi
+        String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=testdb;encrypt=true;trustServerCertificate=true";
+        String user = "yeni_kullanici";  // MSSQL kullanıcı adı
+        String password = "GüçlüBirŞifre"; // MSSQL şifresi
 
         try {
             // MSSQL JDBC Sürücüsünü yükle

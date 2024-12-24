@@ -1,10 +1,9 @@
 package org.example.veritabaniprojesi;
 
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -18,8 +17,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.*;
-import java.sql.PreparedStatement;
 import java.util.List;
 
 public class Controller {
@@ -98,8 +95,8 @@ public class Controller {
             Image productImage = new Image("file:" + product.getImagePath());  // 'file:' ile path'i açıyoruz
             ImageView productImageView = new ImageView(productImage);
             productImageView.setFitHeight(110.0);
-            productImageView.setFitWidth(91.0);
-            productImageView.setLayoutX(61.0);  // Görselin X koordinatı
+            productImageView.setFitWidth(176.0);
+            productImageView.setLayoutX(17.0);  // Görselin X koordinatı
             productImageView.setLayoutY(14.0);  // Görselin Y koordinatı
             productImageView.setPreserveRatio(true);  // Görselin oranını koru
             productImageView.setPickOnBounds(true);  // Tıklanabilir yap
@@ -114,7 +111,7 @@ public class Controller {
             productNameText.setWrappingWidth(91.4700927734375);  // Yazının sarılacağı genişlik
 
             // Ürün fiyatı
-            Text productPriceText = new Text(String.valueOf(product.getFiyat()) + " TL");
+            Text productPriceText = new Text(String.valueOf(product.getFiyat()));
             productPriceText.setLayoutX(108.0);
             productPriceText.setLayoutY(147.0);  // Y koordinatı
             productPriceText.setStrokeType(StrokeType.OUTSIDE);
@@ -124,6 +121,24 @@ public class Controller {
 
             // AnchorPane'e görsel ve metin ekle
             anchorPane.getChildren().addAll(productImageView, productNameText, productPriceText);
+
+            // Tıklama olayı ekle
+            anchorPane.setOnMouseClicked(event -> {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("product-view.fxml"));
+                    Parent productViewParent = loader.load();
+
+                    ProductController controller = loader.getController();
+                    controller.setProductDetails(product);
+
+                    Scene productViewScene = new Scene(productViewParent);
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.setScene(productViewScene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
 
             // AnchorPane'i GridPane'e ekle
             productGrid.add(anchorPane, i % 3, i / 3);  // 3 sütunlu düzenleme, her 3 ürün bir satıra yerleşecek

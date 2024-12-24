@@ -16,8 +16,26 @@ public class AccountController {
     private Label satisYapButton;
 
     @FXML
+    private Label myOrdersButton;
+
+    @FXML
+    private Text helloText;
+    public void initialize() {
+        Kullanici user = KullaniciOturumu.getCurrentUser();
+
+        helloText.setText("Merhaba, " + user.getAd());
+
+    }
+
+    @FXML
     void satisYapma(MouseEvent event) throws IOException {
         changeScene("add-view", satisYapButton);
+    }
+
+
+    @FXML
+    void onMyOrders(MouseEvent event) {
+
     }
 
     void changeScene(String fxml, Node node) throws IOException
@@ -32,14 +50,7 @@ public class AccountController {
 
     }
 
-    @FXML
-    private Text helloText;
-    public void initialize() {
-        Kullanici user = KullaniciOturumu.getCurrentUser();
 
-        helloText.setText("Merhaba, " + user.getAd());
-
-    }
 
 
 }

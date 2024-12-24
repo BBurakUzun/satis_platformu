@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UrunService {
+    static String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=testdb;encrypt=true;trustServerCertificate=true";
+    static String user = "yeni_kullanici";
+    static String pass = "GüçlüBirŞifre";
 
-    String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=testdb;encrypt=true;trustServerCertificate=true";
-    String user = "yeni_kullanici";
-    String pass = "GüçlüBirŞifre";
 
     // Ürün adı ile id'yi almak için fonksiyon
-    public int getProductIdByName(String bookName) {
+    public static int getProductIdByName(String bookName) {
+
         String query = "SELECT id FROM Urun WHERE ad = ?";
         int urunId = -1;  // Başlangıçta -1, ürün bulunmazsa geri dönülecek değer
 

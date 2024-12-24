@@ -8,6 +8,7 @@ public class dbtest {
 
     public static void main(String[] args) {
         String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=testdb;encrypt=true;trustServerCertificate=true";
+
         String user = "yeni_kullanici";  // MSSQL kullanıcı adı
         String password = "GüçlüBirŞifre"; // MSSQL şifresi
 

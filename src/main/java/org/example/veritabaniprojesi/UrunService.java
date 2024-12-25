@@ -33,13 +33,14 @@ public class UrunService {
         return urunId;
     }
 
-    public List<Urun> getAllProducts() {
+    public static List<Urun> getAllProducts() {
         List<Urun> products = new ArrayList<>();
-        String query = "SELECT * FROM Urun";  // Ürün tablosundaki tüm satırları al
+        String query = "SELECT * FROM Urun WHERE satilma = 0 AND satici_id != ?";  // Ürün tablosundaki tüm satırları al
 
         try (Connection conn = DriverManager.getConnection(url, user, pass);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+             PreparedStatement stmt = conn.prepareStatement(query)){
+             stmt.setInt(1, KullaniciOturumu.getCurrentUser().getId());
+             ResultSet rs = stmt.executeQuery();
 
             // Ürün verilerini al
             while (rs.next()) {
@@ -91,5 +92,61 @@ public class UrunService {
 
         return products;
     }
+
+
+    public static List<Urun> getProductsByCategory(String category, String type) {
+        List<Urun> products = new ArrayList<>();
+
+        // Dinamik olarak oluşturulan sorgu
+        String query = "SELECT Urun.id, Urun.ad, Urun.satici_id, Urun.fiyat, Urun.aciklama, Urun.konum, Urun.teslim_turu, Urun.kategori, Urun.sayfa, Urun.yazar, UrunGorselleri.gorsel " +
+                "FROM Urun " +
+                "JOIN UrunGorselleri ON Urun.id = UrunGorselleri.urun_id " +
+                "WHERE Urun.kategori = ? " +
+                "ORDER BY Urun.fiyat " + (type.equalsIgnoreCase("asc") ? "ASC" : "DESC");
+
+        try (Connection conn = DriverManager.getConnection(url, user, pass);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, category);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int p_id = rs.getInt("id");
+                String ad = rs.getString("ad");
+                int saticiId = rs.getInt("satici_id");
+                int fiyat = rs.getInt("fiyat");
+                String aciklama = rs.getString("aciklama");
+                String konum = rs.getString("konum");
+                String teslimTuru = rs.getString("teslim_turu");
+                String kategori = rs.getString("kategori");
+                int sayfa = rs.getInt("sayfa");
+                String yazar = rs.getString("yazar");
+                String gorsel = rs.getString("gorsel");
+
+                Urun urun = new Urun(
+                        p_id,
+                        ad,
+                        saticiId,
+                        fiyat,
+                        aciklama,
+                        konum,
+                        teslimTuru,
+                        kategori,
+                        sayfa,
+                        yazar,
+                        gorsel
+                );
+
+                products.add(urun);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return products;
+    }
+
+
 
 }

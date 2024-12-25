@@ -24,7 +24,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class AddController {
+public class AddController extends AbstractController{
 
     String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=testdb;encrypt=true;trustServerCertificate=true";
     String user = "yeni_kullanici";
@@ -83,10 +83,6 @@ public class AddController {
                 "Kişisel Gelişim",
                 "Felsefe",
                 "Biyografi",
-                "Mutfak",
-                "Çocuk Kitapları",
-                "Sanat",
-                "Edebiyat",
                 "Psikoloji",
                 "Sosyal Bilimler"));
         deliveryType.setItems(FXCollections.observableArrayList("Elden", "Kargo"));
@@ -107,21 +103,6 @@ public class AddController {
         saveImagePathToDatabase(gorsel_path);  // Veritabanına kaydet (seçilen dosyanın path'i)
         changeScene("main-view", submitButton);
     }
-
-//    private void openFileChooser() {
-//        FileChooser fileChooser = new FileChooser();
-//        fileChooser.getExtensionFilters().add(
-//                new FileChooser.ExtensionFilter("Resim Dosyaları", "*.png", "*.jpg", "*.jpeg", "*.gif")
-//        );
-//
-//        Stage stage = (Stage) uploadButton.getScene().getWindow();
-//        File selectedFile = fileChooser.showOpenDialog(stage);
-//        if (selectedFile != null) {
-//            Image image = new Image(selectedFile.toURI().toString());
-//            System.out.println(selectedFile.toURI().toString());
-//            imageView.setImage(image);
-//        }
-//    }
 
     private void openFileChooser() {
         FileChooser fileChooser = new FileChooser();
@@ -213,18 +194,5 @@ public class AddController {
             e.printStackTrace();
             System.out.println("Veritabanına kaydederken hata oluştu.");
         }
-    }
-
-
-    void changeScene(String fxml, Node node) throws IOException
-    {
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml+".fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
-
     }
 }

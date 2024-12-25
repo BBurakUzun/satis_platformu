@@ -1,6 +1,7 @@
 package org.example.veritabaniprojesi;
 
 import java.sql.*;
+import java.util.List;
 
 public class KullaniciService {
 

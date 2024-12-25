@@ -16,7 +16,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SignUpController {
+public class SignUpController extends AbstractController{
     String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=testdb;encrypt=true;trustServerCertificate=true";
     String user = "yeni_kullanici";
     String pass = "GüçlüBirŞifre";
@@ -79,16 +79,5 @@ public class SignUpController {
         }
     }
 
-    void changeScene(String fxml, Node node) throws IOException
-    {
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml+".fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
-
-    }
 
 }

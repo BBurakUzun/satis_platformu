@@ -1,5 +1,6 @@
 package org.example.veritabaniprojesi;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -11,9 +12,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class AccountController {
+public class AccountController extends AbstractController {
     @FXML
     private Label satisYapButton;
+
+    @FXML
+    private Button backButton;
 
     @FXML
     private Label myOrdersButton;
@@ -34,20 +38,13 @@ public class AccountController {
 
 
     @FXML
-    void onMyOrders(MouseEvent event) {
-
+    void onBack(ActionEvent event) throws IOException {
+        changeScene("main-view", satisYapButton);
     }
 
-    void changeScene(String fxml, Node node) throws IOException
-    {
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml+".fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
-
+    @FXML
+    void onMyOrders(MouseEvent event) throws IOException {
+        changeScene("myorders-view", helloText);
     }
 
 

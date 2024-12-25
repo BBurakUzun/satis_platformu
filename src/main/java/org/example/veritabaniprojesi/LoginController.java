@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class LoginController {
+public class LoginController extends AbstractController{
 
 
     @FXML
@@ -73,17 +73,6 @@ public class LoginController {
         }
     }
 
-    void changeScene(String fxml, Node node) throws IOException
-    {
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml+".fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
-
-    }
 
     @FXML
     void wantsToSignUp(MouseEvent event) throws IOException {

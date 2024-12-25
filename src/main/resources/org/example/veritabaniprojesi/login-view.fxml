@@ -14,14 +14,14 @@
    <left>
       <AnchorPane prefHeight="600.0" prefWidth="351.0" style="-fx-background-color: #ede15c;" BorderPane.alignment="CENTER">
          <children>
-            <Text layoutX="85.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SAHIBINDEN">
+            <Text layoutX="85.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BOOKWORM">
                <font>
-                  <Font name="Bell MT" size="29.0" />
+                  <Font name="Arial Black" size="29.0" />
                </font>
             </Text>
-            <ImageView fitHeight="112.0" fitWidth="126.0" layoutX="105.0" layoutY="117.0">
+            <ImageView fitHeight="276.0" fitWidth="310.0" layoutX="14.0" layoutY="55.0">
                <image>
-                  <Image url="@pictures/NicePng_book-logo-png_7936442.png" />
+                  <Image url="@pictures/kitapyurdu%20kopya.png" />
                </image>
             </ImageView>
          </children>

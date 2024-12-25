@@ -87,16 +87,65 @@ public class ProductController extends AbstractController {
 
     void loadComments() {
 
-        String query = "SELECT * FROM Yorumlar WHERE urun_id = ?";
+        String query = "SELECT Yorumlar.*, Kullanici.kullanici_adi " +
+                "FROM Yorumlar " +
+                "JOIN Kullanici ON Yorumlar.gonderen_id = Kullanici.id " +
+                "WHERE urun_id = ?";;
 
+        String desc = null;
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, UrunService.getProductIdByName(productShowName.getText()));  // Kullanıcıdan alınan ürün adını sorguya ekle
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                int urunId = rs.getInt("id");  // Ürün id'sini al
+            while (rs.next()) {
+                desc = rs.getString("yorum_metni");
+                String username = rs.getString("kullanici_adi");
+
+
+
+                AnchorPane commentPane = new AnchorPane();
+                commentPane.setLayoutX(55.0);
+                commentPane.setLayoutY(554.0);
+                commentPane.setPrefHeight(125.0);
+                commentPane.setPrefWidth(982.0);
+
+                // Kullanıcı adı için Label oluşturuluyor
+                Label usernameLabel = new Label();
+                usernameLabel.setLayoutX(125.0);
+                usernameLabel.setLayoutY(17.0);
+                usernameLabel.setPrefHeight(11.0);
+                usernameLabel.setPrefWidth(127.0);
+                usernameLabel.setText(username);
+                usernameLabel.setTextAlignment(TextAlignment.CENTER);
+                usernameLabel.setFont(Font.font("Arial", 12.0));
+
+                // Resim için ImageView oluşturuluyor
+                ImageView userImage = new ImageView();
+                userImage.setFitHeight(91.0);
+                userImage.setFitWidth(91.0);
+                userImage.setLayoutX(14.0);
+                userImage.setLayoutY(25.0);
+                userImage.setPickOnBounds(true);
+                userImage.setPreserveRatio(true);
+                userImage.setImage(new Image(getClass().getResource("/org/example/veritabaniprojesi/pictures/PngItem_93862.png").toExternalForm()));
+
+                // Yorum metni için TextField oluşturuluyor
+                TextField commentField = new TextField();
+                commentField.setEditable(false);
+                commentField.setLayoutX(125.0);
+                commentField.setLayoutY(38.0);
+                commentField.setPrefHeight(71.0);
+                commentField.setPrefWidth(730.0);
+                commentField.setStyle("-fx-background-radius: 50px;");
+                commentField.setText(desc);
+
+                // Öğeleri AnchorPane'e ekliyoruz
+                commentPane.getChildren().addAll(usernameLabel, userImage, commentField);
+
+                // Yorumları içeren bir container (örneğin bir VBox) varsa, yeni yorum ekliyoruz
+                commentVBox.getChildren().add(commentPane);
             }
 
         } catch (SQLException e) {
@@ -104,54 +153,6 @@ public class ProductController extends AbstractController {
         }
 
 
-
-        AnchorPane commentPane = new AnchorPane();
-        commentPane.setLayoutX(55.0);
-        commentPane.setLayoutY(554.0);
-        commentPane.setPrefHeight(125.0);
-        commentPane.setPrefWidth(982.0);
-
-        // Kullanıcı adı için Label oluşturuluyor
-        Label usernameLabel = new Label();
-        usernameLabel.setLayoutX(125.0);
-        usernameLabel.setLayoutY(17.0);
-        usernameLabel.setPrefHeight(11.0);
-        usernameLabel.setPrefWidth(127.0);
-        usernameLabel.setText(KullaniciOturumu.getCurrentUser().getKullanici_adi());
-        usernameLabel.setTextAlignment(TextAlignment.CENTER);
-        usernameLabel.setFont(Font.font("Arial", 12.0));
-
-        // Resim için ImageView oluşturuluyor
-        ImageView userImage = new ImageView();
-        userImage.setFitHeight(91.0);
-        userImage.setFitWidth(91.0);
-        userImage.setLayoutX(14.0);
-        userImage.setLayoutY(25.0);
-        userImage.setPickOnBounds(true);
-        userImage.setPreserveRatio(true);
-        userImage.setImage(new Image("C:\\Users\\Buğra\\Downloads\\dev-spring-boot\\01-spring-boot-overview\\VeritabaniProjesi\\src\\main\\resources\\org\\example\\veritabaniprojesi\\pictures"));
-
-        // Yorum metni için TextField oluşturuluyor
-        TextField commentField = new TextField();
-        commentField.setEditable(false);
-        commentField.setLayoutX(125.0);
-        commentField.setLayoutY(38.0);
-        commentField.setPrefHeight(71.0);
-        commentField.setPrefWidth(730.0);
-        commentField.setStyle("-fx-background-radius: 50px;");
-        commentField.setText(" ");
-
-        // Öğeleri AnchorPane'e ekliyoruz
-        commentPane.getChildren().addAll(usernameLabel, userImage, commentField);
-
-        // Yorumları içeren bir container (örneğin bir VBox) varsa, yeni yorum ekliyoruz
-        commentVBox.getChildren().add(commentPane);
-//        // veri tabanından çek
-//        for (int i = 0; i < row; i++) {
-//            Label label = new Label();
-//            label.setText(row.data);
-//            commentVBox.getChildren().add(label);
-//        }
     }
 
     @FXML

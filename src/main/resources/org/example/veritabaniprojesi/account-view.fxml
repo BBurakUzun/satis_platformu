@@ -42,6 +42,17 @@
                   <Insets bottom="10.0" />
                </padding>
             </Label>
+            <Label fx:id="logOffButton" alignment="CENTER" onMouseClicked="#logOff" prefHeight="55.0" prefWidth="528.0" style="-fx-background-radius: 5px; -fx-background-color: #400e0d;" text="Oturumu Kapat" textAlignment="CENTER" textFill="#ffacac">
+               <font>
+                  <Font size="22.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets top="115.0" />
+               </VBox.margin>
+            </Label>
          </children>
          <padding>
             <Insets bottom="5.0" />

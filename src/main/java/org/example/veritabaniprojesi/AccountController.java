@@ -32,6 +32,12 @@ public class AccountController extends AbstractController {
     }
 
     @FXML
+    public void logOff(MouseEvent event) throws IOException {
+        KullaniciOturumu.logout();
+        changeScene("login-view", satisYapButton);
+    }
+
+    @FXML
     void satisYapma(MouseEvent event) throws IOException {
         changeScene("add-view", satisYapButton);
     }

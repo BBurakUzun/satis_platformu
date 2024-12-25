@@ -101,7 +101,6 @@
                   <Font name="Arial" size="16.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" text="Button" />
          </children>
          <padding>
             <Insets top="50.0" />

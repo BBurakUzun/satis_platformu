@@ -1,6 +1,7 @@
 package org.example.veritabaniprojesi;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -68,8 +69,16 @@ public class AddController extends AbstractController{
     @FXML
     private TextField writer;
 
+    @FXML
+    private Button backButton;
+
     private String gorsel_path;
 
+
+    @FXML
+    public void onBack(ActionEvent event) throws IOException {
+        changeScene("account-view", backButton);
+    }
 
     @FXML
     private void initialize() {

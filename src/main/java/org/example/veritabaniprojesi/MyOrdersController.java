@@ -33,63 +33,36 @@ public class MyOrdersController extends AbstractController {
     }
 
     void loadSiparisler() {
-        String siparisSQL = "SELECT id, tarih FROM Siparis WHERE musteri_id = ?";
-        String siparisDetaySQL = "SELECT urun_id FROM SiparisDetaylari WHERE siparis_id = ?";
-        String urunSQL = "SELECT ad, fiyat FROM Urun WHERE id = ?";
-        String urunGorselSQL = "SELECT gorsel FROM UrunGorselleri WHERE urun_id = ?";
+        String query = "SELECT Siparis.id, Siparis.tarih, Urun.ad, Urun.fiyat, UrunGorselleri.gorsel " +
+                "FROM Siparis " +
+                "JOIN SiparisDetaylari ON Siparis.id = SiparisDetaylari.siparis_id " +
+                "JOIN Urun ON SiparisDetaylari.urun_id = Urun.id " +
+                "LEFT JOIN UrunGorselleri ON Urun.id = UrunGorselleri.urun_id " +
+                "WHERE Siparis.musteri_id = ?";
 
         try (Connection conn = DriverManager.getConnection(url, user, pass);
-             PreparedStatement siparisStmt = conn.prepareStatement(siparisSQL)) {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            siparisStmt.setInt(1, KullaniciOturumu.getCurrentUser().getId());
-            ResultSet siparisRs = siparisStmt.executeQuery();
+            stmt.setInt(1, KullaniciOturumu.getCurrentUser().getId());
+            ResultSet rs = stmt.executeQuery();
 
-            while (siparisRs.next()) {
-                int siparisId = siparisRs.getInt("id");
-                Date siparisTarihi = siparisRs.getDate("tarih");
+            while (rs.next()) {
+                int siparisId = rs.getInt("id");
+                Date siparisTarihi = rs.getDate("tarih");
+                String urunAdi = rs.getString("ad");
+                double fiyat = rs.getDouble("fiyat");
+                String gorselYolu = rs.getString("gorsel");
 
-                PreparedStatement siparisDetayStmt = conn.prepareStatement(siparisDetaySQL);
-                siparisDetayStmt.setInt(1, siparisId);
-                ResultSet siparisDetayRs = siparisDetayStmt.executeQuery();
-
-                while (siparisDetayRs.next()) {
-                    int urunId = siparisDetayRs.getInt("urun_id");
-
-                    PreparedStatement urunStmt = conn.prepareStatement(urunSQL);
-                    urunStmt.setInt(1, urunId);
-                    ResultSet urunRs = urunStmt.executeQuery();
-
-                    if (urunRs.next()) {
-                        String urunAdi = urunRs.getString("ad");
-                        double fiyat = urunRs.getDouble("fiyat");
-
-                        // Ürün görselini çek
-                        PreparedStatement urunGorselStmt = conn.prepareStatement(urunGorselSQL);
-                        urunGorselStmt.setInt(1, urunId);
-                        ResultSet urunGorselRs = urunGorselStmt.executeQuery();
-
-                        String gorselYolu = null; // Varsayılan görsel yolu
-                        if (urunGorselRs.next()) {
-                            gorselYolu = urunGorselRs.getString("gorsel");
-                        }
-
-                        // AnchorPane oluştur ve VBox'a ekle
-                        AnchorPane siparisPane = createSiparisPane(urunAdi, fiyat, siparisTarihi, gorselYolu);
-                        siparisVBox.getChildren().add(siparisPane);
-
-                        urunGorselRs.close();
-                        urunGorselStmt.close();
-                    }
-                    urunRs.close();
-                    urunStmt.close();
-                }
-                siparisDetayRs.close();
-                siparisDetayStmt.close();
+                // AnchorPane oluştur ve VBox'a ekle
+                AnchorPane siparisPane = createSiparisPane(urunAdi, fiyat, siparisTarihi, gorselYolu);
+                siparisVBox.getChildren().add(siparisPane);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     private AnchorPane createSiparisPane(String urunAdi, double fiyat, Date siparisTarihi, String gorselYolu) {
         AnchorPane pane = new AnchorPane();
